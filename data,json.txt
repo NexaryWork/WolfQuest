@@ -1,5 +1,13 @@
 {
-    "definicion de inteligencia artificial": "La inteligencia artificial es una rama de la informática que se encarga de crear sistemas capaces de realizar tareas que requieren inteligencia humana.",
-    "quien inventó la computadora": "La primera computadora fue inventada por Charles Babbage en el siglo XIX.",
-    "que es HTML": "HTML es el lenguaje de marcado para la creación de páginas web."
+    "preguntas_respuestas": [
+        {
+            "pregunta": "¿Cuál es tu nombre?",
+            "respuesta": "Soy un asistente virtual creado para ayudarte."
+        },
+        {
+            "pregunta": "¿Cómo funciona esto?",
+            "respuesta": "Es sencillo, solo escribe tu pregunta y yo te responderé según la información disponible."
+        }
+        // Añade más preguntas y respuestas según necesites
+    ]
 }
