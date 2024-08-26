@@ -3,37 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente Inteligente</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <title>Bot IA</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <img src="ruta/del/logotipo.png" alt="Logotipo del asistente">
-        <h1>Asistente Inteligente</h1>
-    </header>
-
-    <nav>
-        <button id="chatTab" aria-label="Pestaña de Chat" tabindex="0">Chat</button>
-        <button id="feedbackTab" aria-label="Pestaña de Feedback" tabindex="0">Feedback</button>
-    </nav>
-
     <div class="container">
-        <section id="chatSection">
-            <div id="messages" role="log" aria-live="polite"></div>
-            <input type="text" id="userInput" placeholder="Escribe tu pregunta..." aria-label="Campo para escribir preguntas">
-            <button id="sendButton" aria-label="Enviar mensaje" tabindex="0">Enviar</button>
-        </section>
-        
-        <section id="feedbackSection" style="display: none;">
+        <h1>Bot IA</h1>
+        <div class="tabs">
+            <button class="tablink" onclick="openTab(event, 'Chat')">Chat</button>
+            <button class="tablink" onclick="openTab(event, 'Feedback')">Feedback</button>
+        </div>
+        <div id="Chat" class="tabcontent">
+            <div id="chatbox"></div>
+            <input type="text" id="userInput" placeholder="Escribe tu pregunta...">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+        <div id="Feedback" class="tabcontent">
             <h2>Feedback</h2>
-            <input type="text" id="questionInput" placeholder="Añadir Preguntas" aria-label="Campo para añadir preguntas">
-            <input type="text" id="variableInput" placeholder="Añadir Variables de preguntas (Opcional)" aria-label="Campo para añadir variables de preguntas opcional">
-            <textarea id="answerInput" placeholder="Añadir Respuestas" aria-label="Campo para añadir respuestas"></textarea>
-            <button id="submitFeedback" aria-label="Enviar feedback" tabindex="0">Enviar Feedback</button>
-        </section>
+            <input type="text" id="newQuestion" placeholder="Nueva pregunta">
+            <input type="text" id="newAnswer" placeholder="Nueva respuesta">
+            <button onclick="submitFeedback()">Enviar Feedback</button>
+        </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
