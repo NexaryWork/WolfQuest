@@ -1,74 +1,59 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Añadir eventos para los botones
+document.getElementById('sendButton').addEventListener('click', sendMessage);
+document.getElementById('submitFeedback').addEventListener('click', submitFeedback);
+
+// Función para enviar el mensaje (implementa la lógica de chat aquí)
+function sendMessage() {
+    const userInput = document.getElementById('userInput').value;
+    if (userInput.trim() === '') return;
+
+    // Aquí deberías añadir el mensaje al chat
     const messagesDiv = document.getElementById('messages');
-    const userInput = document.getElementById('userInput');
-    const sendButton = document.getElementById('sendButton');
-    const feedbackInput = document.getElementById('feedbackInput');
-    const feedbackButton = document.getElementById('feedbackButton');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message';
+    messageDiv.innerHTML = `<strong>Usuario:</strong> ${userInput}`;
+    messagesDiv.appendChild(messageDiv);
 
-    let data = {};
+    // Limpiar el input del usuario
+    document.getElementById('userInput').value = '';
 
-    // Cargar datos JSON
-    fetch('data.json')
-        .then(response => response.json())
-        .then(json => {
-            data = json;
-        })
-        .catch(error => console.error('Error cargando el archivo JSON:', error));
+    // Aquí puedes añadir la lógica para manejar la respuesta del chat
+}
 
-    // Enviar pregunta
-    sendButton.addEventListener('click', () => {
-        const question = userInput.value.trim();
-        if (question) {
-            displayMessage('Usuario', question);
-            processQuestion(question);
-            userInput.value = '';
-        }
-    });
+// Función para enviar feedback
+async function submitFeedback() {
+    const question = document.getElementById('questionInput').value;
+    const answer = document.getElementById('answerInput').value;
 
-    // Procesar pregunta
-    function processQuestion(question) {
-        let response = 'No se encontró respuesta.';
-        const lowerQuestion = question.toLowerCase();
-        
-        for (const key in data) {
-            if (data[key].toLowerCase().includes(lowerQuestion)) {
-                response = data[key];
-                break;
-            }
-        }
-        
-        // Validación de respuesta
-        response = filterResponse(response);
-        displayMessage('Asistente', response);
+    if (question.trim() === '' || answer.trim() === '') {
+        alert('Por favor, completa ambos campos.');
+        return;
     }
 
-    // Mostrar mensaje
-    function displayMessage(sender, text) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message');
-        messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
-        messagesDiv.appendChild(messageDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
+    // Preparar los datos
+    const feedback = {
+        question: question,
+        answer: answer
+    };
 
-    // Filtrar respuestas inapropiadas
-    function filterResponse(response) {
-        const inappropriateWords = ['malo', 'inapropiado']; // Añadir palabras a filtrar
-        for (const word of inappropriateWords) {
-            if (response.toLowerCase().includes(word)) {
-                return 'Lo siento, no puedo proporcionar una respuesta para esa pregunta.';
-            }
-        }
-        return response;
-    }
+    // Enviar feedback al servidor (aquí simulamos el almacenamiento en un archivo JSON)
+    try {
+        const response = await fetch('data.json');
+        if (!response.ok) throw new Error('Error al cargar el archivo JSON');
 
-    // Enviar feedback
-    feedbackButton.addEventListener('click', () => {
-        const feedback = feedbackInput.value.trim();
-        if (feedback) {
-            // Aquí puedes implementar la lógica para enviar el feedback a un servidor o guardarlo
-            alert('Gracias por tu feedback!');
-            feedbackInput.value = '';
-        }
-    });
-});
+        let data = await response.json();
+        data.push(feedback);
+
+        // Actualizar el archivo JSON (esto no se puede hacer directamente desde el navegador,
+        // necesitarías un servidor para manejar esta actualización)
+        // Aquí solo mostramos un mensaje de éxito
+        alert('Feedback enviado con éxito.');
+
+        // Limpiar los campos de entrada
+        document.getElementById('questionInput').value = '';
+        document.getElementById('answerInput').value = '';
+    } catch (error) {
+        console.error('Error al enviar feedback:', error);
+        alert('Hubo un error al enviar el feedback.');
+    }
+}
