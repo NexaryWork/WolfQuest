@@ -1,59 +1,127 @@
-// Añadir eventos para los botones
-document.getElementById('sendButton').addEventListener('click', sendMessage);
-document.getElementById('submitFeedback').addEventListener('click', submitFeedback);
+document.addEventListener('DOMContentLoaded', () => {
+    const sendButton = document.getElementById('sendButton');
+    const userInput = document.getElementById('userInput');
+    const messages = document.getElementById('messages');
+    const submitFeedback = document.getElementById('submitFeedback');
+    const questionInput = document.getElementById('questionInput');
+    const variableInput = document.getElementById('variableInput');
+    const answerInput = document.getElementById('answerInput');
 
-// Función para enviar el mensaje (implementa la lógica de chat aquí)
-function sendMessage() {
-    const userInput = document.getElementById('userInput').value;
-    if (userInput.trim() === '') return;
+    // Referencias a las secciones
+    const chatSection = document.getElementById('chatSection');
+    const feedbackSection = document.getElementById('feedbackSection');
 
-    // Aquí deberías añadir el mensaje al chat
-    const messagesDiv = document.getElementById('messages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message';
-    messageDiv.innerHTML = `<strong>Usuario:</strong> ${userInput}`;
-    messagesDiv.appendChild(messageDiv);
+    // Pestañas
+    const chatTab = document.getElementById('chatTab');
+    const feedbackTab = document.getElementById('feedbackTab');
 
-    // Limpiar el input del usuario
-    document.getElementById('userInput').value = '';
+    // Cambia la sección visible
+    chatTab.addEventListener('click', () => {
+        switchSection(chatSection, chatTab);
+    });
 
-    // Aquí puedes añadir la lógica para manejar la respuesta del chat
-}
+    feedbackTab.addEventListener('click', () => {
+        switchSection(feedbackSection, feedbackTab);
+    });
 
-// Función para enviar feedback
-async function submitFeedback() {
-    const question = document.getElementById('questionInput').value;
-    const answer = document.getElementById('answerInput').value;
+    function switchSection(section, tab) {
+        chatSection.style.display = 'none';
+        feedbackSection.style.display = 'none';
+        section.style.display = 'block';
 
-    if (question.trim() === '' || answer.trim() === '') {
-        alert('Por favor, completa ambos campos.');
-        return;
+        chatTab.style.color = '#E0E0E0';
+        feedbackTab.style.color = '#E0E0E0';
+        tab.style.color = '#c62828';
     }
 
-    // Preparar los datos
-    const feedback = {
-        question: question,
-        answer: answer
-    };
+    // Enviar mensaje del usuario al hacer clic en el botón o presionar "Enter"
+    sendButton.addEventListener('click', () => {
+        enviarMensaje();
+    });
 
-    // Enviar feedback al servidor (aquí simulamos el almacenamiento en un archivo JSON)
-    try {
-        const response = await fetch('data.json');
-        if (!response.ok) throw new Error('Error al cargar el archivo JSON');
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') enviarMensaje();
+    });
 
-        let data = await response.json();
-        data.push(feedback);
+    function enviarMensaje() {
+        const messageText = userInput.value.trim();
+        if (messageText && !contieneContenidoInapropiado(messageText)) {
+            fetch('https://raw.githubusercontent.com/tu-usuario/tu-repositorio/main/data.json') // URL al archivo JSON en GitHub
+                .then(response => response.json())
+                .then(data => {
+                    const preguntasRespuestas = data.preguntas_respuestas;
+                    
+                    // Busca la respuesta en el JSON
+                    function buscarRespuesta(pregunta) {
+                        const respuestaEncontrada = preguntasRespuestas.find(item => item.pregunta.toLowerCase() === pregunta.toLowerCase());
+                        return respuestaEncontrada ? respuestaEncontrada.respuesta : "No tengo una respuesta para eso.";
+                    }
 
-        // Actualizar el archivo JSON (esto no se puede hacer directamente desde el navegador,
-        // necesitarías un servidor para manejar esta actualización)
-        // Aquí solo mostramos un mensaje de éxito
-        alert('Feedback enviado con éxito.');
-
-        // Limpiar los campos de entrada
-        document.getElementById('questionInput').value = '';
-        document.getElementById('answerInput').value = '';
-    } catch (error) {
-        console.error('Error al enviar feedback:', error);
-        alert('Hubo un error al enviar el feedback.');
+                    const respuesta = buscarRespuesta(messageText);
+                    
+                    // Crear contenedor para mensajes
+                    const messageContainer = document.createElement('div');
+                    messageContainer.className = 'message-container';
+                    
+                    // Mensaje del usuario
+                    const userMessageElement = document.createElement('div');
+                    userMessageElement.className = 'message user';
+                    userMessageElement.innerHTML = `<strong>Usuario:</strong> ${messageText}`;
+                    
+                    // Mensaje del bot
+                    const botMessageElement = document.createElement('div');
+                    botMessageElement.className = 'message bot';
+                    botMessageElement.innerHTML = `<strong>Asistente:</strong> ${respuesta}`;
+                    
+                    // Añadir mensajes al contenedor
+                    messageContainer.appendChild(userMessageElement);
+                    messageContainer.appendChild(botMessageElement);
+                    
+                    // Añadir contenedor al área de mensajes
+                    messages.appendChild(messageContainer);
+                    userInput.value = ''; // Limpiar campo de entrada
+                    messages.scrollTop = messages.scrollHeight; // Desplazar hacia abajo
+                });
+        }
     }
-}
+
+    function contieneContenidoInapropiado(texto) {
+        const palabrasProhibidas = ["malo", "inapropiado", "prohibido"]; // Añade palabras que deseas filtrar
+        return palabrasProhibidas.some(palabra => texto.toLowerCase().includes(palabra));
+    }
+
+    // Enviar feedback
+    submitFeedback.addEventListener('click', () => {
+        const question = questionInput.value.trim();
+        const variable = variableInput.value.trim();
+        const answer = answerInput.value.trim();
+
+        if (question && answer) {
+            fetch('https://tu-servicio-backend.com/guardar-feedback', { // Cambia la URL al endpoint de tu servicio de backend
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    pregunta: question,
+                    variable: variable,
+                    respuesta: answer
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Feedback enviado con éxito:', data);
+                questionInput.value = '';
+                variableInput.value = '';
+                answerInput.value = '';
+                alert('Feedback enviado con éxito');
+            })
+            .catch(error => {
+                console.error('Error al enviar feedback:', error);
+                alert('Hubo un error al enviar el feedback');
+            });
+        } else {
+            alert('Por favor, completa todos los campos obligatorios');
+        }
+    });
+});
