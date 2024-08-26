@@ -4,25 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asistente Inteligente</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
+        <img src="ruta/del/logotipo.png" alt="Logotipo del asistente">
         <h1>Asistente Inteligente</h1>
     </header>
-    <main>
-        <section id="chat">
-            <div id="messages"></div>
-            <input type="text" id="userInput" placeholder="Escribe tu pregunta...">
-            <button id="sendButton">Enviar</button>
+
+    <nav>
+        <button id="chatTab" aria-label="Pestaña de Chat" tabindex="0">Chat</button>
+        <button id="feedbackTab" aria-label="Pestaña de Feedback" tabindex="0">Feedback</button>
+    </nav>
+
+    <div class="container">
+        <section id="chatSection">
+            <div id="messages" role="log" aria-live="polite"></div>
+            <input type="text" id="userInput" placeholder="Escribe tu pregunta..." aria-label="Campo para escribir preguntas">
+            <button id="sendButton" aria-label="Enviar mensaje" tabindex="0">Enviar</button>
         </section>
-        <section id="feedback">
+        
+        <section id="feedbackSection" style="display: none;">
             <h2>Feedback</h2>
-            <textarea id="questionInput" placeholder="Escribe tu pregunta aquí..."></textarea>
-            <textarea id="answerInput" placeholder="Escribe tu respuesta aquí..."></textarea>
-            <button id="submitFeedback">Enviar Feedback</button>
+            <input type="text" id="questionInput" placeholder="Añadir Preguntas" aria-label="Campo para añadir preguntas">
+            <input type="text" id="variableInput" placeholder="Añadir Variables de preguntas (Opcional)" aria-label="Campo para añadir variables de preguntas opcional">
+            <textarea id="answerInput" placeholder="Añadir Respuestas" aria-label="Campo para añadir respuestas"></textarea>
+            <button id="submitFeedback" aria-label="Enviar feedback" tabindex="0">Enviar Feedback</button>
         </section>
-    </main>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
