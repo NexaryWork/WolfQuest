@@ -1,13 +1,4 @@
 {
-    "preguntas_respuestas": [
-        {
-            "pregunta": "¿Cuál es tu nombre?",
-            "respuesta": "Soy un asistente virtual creado para ayudarte."
-        },
-        {
-            "pregunta": "¿Cómo funciona esto?",
-            "respuesta": "Es sencillo, solo escribe tu pregunta y yo te responderé según la información disponible."
-        }
-        // Añade más preguntas y respuestas según necesites
-    ]
+    "Hola": "¡Hola! ¿Cómo puedo ayudarte hoy?",
+    "¿Qué es JavaScript?": "JavaScript es un lenguaje de programación que se utiliza para crear contenido dinámico en la web."
 }
