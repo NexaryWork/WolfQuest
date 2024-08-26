@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 1em;
+}
+
+main {
+    padding: 2em;
+}
+
+#chat {
+    margin-bottom: 2em;
+}
+
+#messages {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 1em;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+#userInput {
+    width: 80%;
+    padding: 0.5em;
+}
+
+#sendButton {
+    padding: 0.5em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#feedback {
+    margin-top: 2em;
+}
+
+#feedbackInput {
+    width: 100%;
+    height: 100px;
+    padding: 0.5em;
+}
+
+#feedbackButton {
+    padding: 0.5em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
