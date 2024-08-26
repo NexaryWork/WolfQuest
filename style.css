@@ -1,60 +1,109 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #121212;
+    color: #e0e0e0;
 }
 
 header {
-    background-color: #4CAF50;
-    color: white;
-    text-align: center;
-    padding: 1em;
+    background-color: #1f1f1f;
+    padding: 10px 20px;
+    border-bottom: 2px solid #333;
+    color: #e0e0e0;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
 }
 
 main {
-    padding: 2em;
+    padding: 20px;
 }
 
+section {
+    margin-bottom: 20px;
+}
+
+/* Chat Section */
 #chat {
-    margin-bottom: 2em;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 #messages {
-    background: white;
-    border: 1px solid #ccc;
-    padding: 1em;
-    height: 300px;
-    overflow-y: scroll;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding-right: 10px;
 }
 
-#userInput {
-    width: 80%;
-    padding: 0.5em;
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #2c2c2c;
 }
 
-#sendButton {
-    padding: 0.5em;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
+.message strong {
+    color: #bb86fc;
 }
 
-#feedback {
-    margin-top: 2em;
-}
-
+/* Input and Button Styles */
+#userInput,
 #feedbackInput {
-    width: 100%;
-    height: 100px;
-    padding: 0.5em;
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #333;
+    color: #e0e0e0;
+    margin-bottom: 10px;
 }
 
+#sendButton,
 #feedbackButton {
-    padding: 0.5em;
-    background-color: #4CAF50;
-    color: white;
+    padding: 10px 15px;
     border: none;
+    border-radius: 5px;
+    background-color: #6200ee;
+    color: #fff;
     cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#sendButton:hover,
+#feedbackButton:hover {
+    background-color: #3700b3;
+}
+
+/* Feedback Section */
+#feedback {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#feedback h2 {
+    margin-top: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #userInput,
+    #feedbackInput {
+        width: calc(100% - 20px);
+    }
+
+    #sendButton,
+    #feedbackButton {
+        width: 100%;
+        margin-top: 10px;
+    }
 }
