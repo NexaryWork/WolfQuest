@@ -1,42 +1,39 @@
-document.getElementById('send-btn').addEventListener('click', sendMessage);
-document.getElementById('user-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
+const chatBox = document.getElementById('chat-box');
+const userInput = document.getElementById('user-input');
+
+function appendMessage(message, type) {
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${type}`;
+    messageElement.innerHTML = `<div class="bubble ${type}">${message}</div>`;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
 
 function sendMessage() {
-    const inputField = document.getElementById('user-input');
-    const message = inputField.value;
-
-    if (message.trim() !== '') {
-        displayUserMessage(message);
-        inputField.value = '';
-        generateBotResponse();
+    const message = userInput.value.trim();
+    if (message) {
+        appendMessage(message, 'user');
+        userInput.value = '';
+        getBotResponse(message);
     }
 }
 
-function displayUserMessage(message) {
-    const chatBox = document.getElementById('chat-box');
-    const userBubble = document.createElement('div');
-    userBubble.classList.add('bubble', 'user-bubble');
-    userBubble.textContent = message;
-    chatBox.appendChild(userBubble);
-    chatBox.scrollTop = chatBox.scrollHeight;  // Scroll to the bottom
-}
-
-function generateBotResponse() {
-    const chatBox = document.getElementById('chat-box');
-    const botBubble = document.createElement('div');
-    botBubble.classList.add('bubble', 'bot-bubble', 'typing');
-    botBubble.textContent = '';
-    chatBox.appendChild(botBubble);
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    // Simulación de respuesta del bot
-    setTimeout(() => {
-        botBubble.classList.remove('typing');
-        botBubble.textContent = 'Aquí está una respuesta predefinida a tu mensaje.';
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }, 1000);  // 1 segundo de espera para simular escritura
+function getBotResponse(message) {
+    appendMessage('<div class="typing-indicator">•••</div>', 'bot');
+    fetch('/get-response', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        const botMessageElement = chatBox.querySelector('.message.bot .bubble');
+        if (botMessageElement) {
+            botMessageElement.innerHTML = data.response;
+        } else {
+            appendMessage(data.response, 'bot');
+        }
+    });
 }
